@@ -1,7 +1,6 @@
 #
 # Variables for the Linode Kubernetes Engine (LKE) Terraform module.
 #
-
 variable "linode_token" {
   description = "Token for Linode API"
   type        = string

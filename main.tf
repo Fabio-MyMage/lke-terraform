@@ -1,7 +1,6 @@
 #
 # Linode Kubernetes Engine (LKE) Cluster definition
 #
-
 resource "linode_lke_cluster" "lke" {
   label       = var.linode_lke_label
   k8s_version = var.k8s_version

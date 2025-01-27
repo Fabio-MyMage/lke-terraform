@@ -1,3 +1,6 @@
+#
+# Linode Kubernetes Engine (LKE) Provider definitions
+#
 terraform {
   required_providers {
     linode = {
