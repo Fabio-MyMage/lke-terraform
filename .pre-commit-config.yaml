@@ -6,3 +6,4 @@ repos:
         args:
           - --args=-diff
           - --args=-recursive
+      - id: terraform_validate

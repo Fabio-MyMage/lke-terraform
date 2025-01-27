@@ -8,6 +8,7 @@ terraform {
 }
 
 provider "linode" {
-  token = var.linode_token
-  url   = var.linode_api_url
+  token       = var.linode_token
+  url         = var.linode_api_url
+  api_version = var.linode_api_version
 }

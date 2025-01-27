@@ -11,11 +11,42 @@ variable "linode_token" {
 variable "linode_api_url" {
   description = "URL for Linode API"
   type        = string
-  default     = "https://api.linode.com/v4"
+  default     = "https://api.linode.com"
+}
+
+variable "linode_api_version" {
+  description = "Version of Linode API"
+  type        = string
+  default     = "v4"
+}
+
+variable "linode_lke_label" {
+  description = "The label for the LKE cluster."
+  type        = string
+}
+
+variable "available_k8s_versions" {
+  description = "Set of available Kubernetes versions"
+  type        = set(string)
+  default = [
+    "1.31",
+    "1.30"
+  ]
+}
+
+variable "k8s_version" {
+  description = "The Kubernetes version to use for the LKE cluster."
+  type        = string
+  default     = "1.31"
+
+  validation {
+    condition     = contains(var.available_k8s_versions, var.k8s_version)
+    error_message = "Invalid Kubernetes version selected. Available versions are: ${join(", ", var.available_k8s_versions)}"
+  }
 }
 
 # Based on https://www.linode.com/global-infrastructure/availability/
-variable "available_regions" {
+variable "linode_available_regions" {
   description = "Set of available regions"
   type        = set(string)
   default = [
@@ -53,17 +84,19 @@ variable "available_regions" {
   ]
 }
 
-variable "region" {
+variable "linode_lke_region" {
   description = "The region to deploy the LKE cluster in."
   type        = string
+  default     = "gb-lon"
 
   validation {
-    condition     = contains(var.available_regions, var.region)
-    error_message = "Invalid region selected. Available regions are: ${join(", ", var.available_regions)}"
+    condition     = contains(var.linode_available_regions, var.linode_lke_region)
+    error_message = "Invalid region selected. Available regions are: ${join(", ", var.linode_available_regions)}"
   }
 }
 
-variable "available_pool_types" {
+# Based on https://www.linode.com/community/questions/24779/how-do-i-get-a-list-of-all-of-the-current-plan-types/
+variable "linode_available_pool_types" {
   description = "Set of available pool types"
   type        = set(string)
   default = [
@@ -107,17 +140,31 @@ variable "available_pool_types" {
   ]
 }
 
-variable "pool_count" {
-  description = "The number of instances to provision in the LKE cluster."
-  type        = number
-}
-
-variable "pool_type" {
+variable "linode_lke_pool_type" {
   description = "The type of instances to provision in the LKE cluster."
   type        = string
+  default     = "g6-standard-1"
 
   validation {
-    condition     = contains(var.available_pool_types, var.pool_type)
-    error_message = "Invalid pool type selected. Available pool types are: ${join(", ", var.available_pool_types)}"
+    condition     = contains(var.linode_available_pool_types, var.linode_lke_pool_type)
+    error_message = "Invalid pool type selected. Available pool types are: ${join(", ", var.linode_available_pool_types)}"
   }
+}
+
+variable "linode_lke_pool_count" {
+  description = "The number of instances to provision in the LKE cluster."
+  type        = number
+  default     = 1
+}
+
+variable "linode_lke_pool_autoscaling_multiplier" {
+  description = "The multiplier for the number of instances to provision in the LKE cluster."
+  type        = number
+  default     = 1 # Default to 1 effectively disabling autoscaling
+}
+
+variable "linode_lke_ha_control_plane" {
+  description = "Whether to enable a highly available control plane for the LKE cluster."
+  type        = bool
+  default     = false
 }
