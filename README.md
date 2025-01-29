@@ -11,15 +11,19 @@ This repository contains a Terraform module for provisioning and managing a Lino
 
 To use this module in your Terraform configuration, add the following to your `main.tf` file:
 
-```
+```hcl
 module "lke_cluster" {
   source = "github.com/Fabio-MyMage/lke-terraform"
 
-  linode_token          = var.linode_token
-  linode_lke_label      = var.linode_lke_label
-  region                = var.region
-  pool_type             = var.pool_type
-  pool_count            = var.pool_count
-  k8s_version           = var.k8s_version
+  linode_token                       = var.linode_token
+  linode_lke_label                   = var.linode_lke_label
+  linode_lke_region                  = var.linode_lke_region
+  linode_lke_k8s_version             = var.linode_lke_k8s_version
+  linode_lke_ha_control_plane        = var.linode_lke_ha_control_plane
+  linode_lke_default_pool_type       = var.linode_lke_default_pool_type
+  linode_lke_default_pool_count      = var.linode_lke_default_pool_count
+  linode_lke_additional_pool_type    = var.linode_lke_additional_pool_type
+  linode_lke_additional_pool_count   = var.linode_lke_additional_pool_count
+  linode_lke_pool_autoscaling_multiplier = var.linode_lke_pool_autoscaling_multiplier
 }
 ```

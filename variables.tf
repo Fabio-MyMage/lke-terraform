@@ -139,24 +139,47 @@ variable "linode_available_pool_types" {
   ]
 }
 
-variable "linode_lke_pool_type" {
+variable "linode_lke_default_pool_type" {
   description = "The type of instances to provision in the LKE cluster."
   type        = string
   default     = "g6-standard-1"
 
   validation {
-    condition     = contains(var.linode_available_pool_types, var.linode_lke_pool_type)
+    condition     = contains(var.linode_available_pool_types, var.linode_lke_default_pool_type)
     error_message = "Invalid pool type selected. Available pool types are: ${join(", ", var.linode_available_pool_types)}"
   }
 }
 
-variable "linode_lke_pool_count" {
+variable "linode_lke_additional_pool_type" {
+  description = "The type of instances to provision in the LKE cluster."
+  type        = string
+  default     = "g6-standard-1"
+
+  validation {
+    condition     = contains(var.linode_available_pool_types, var.linode_lke_additional_pool_type)
+    error_message = "Invalid pool type selected. Available pool types are: ${join(", ", var.linode_available_pool_types)}"
+  }
+}
+
+variable "linode_lke_default_pool_count" {
   description = "The number of instances to provision in the LKE cluster."
   type        = number
   default     = 1
 }
 
-variable "linode_lke_pool_autoscaling_multiplier" {
+variable "linode_lke_additional_pool_count" {
+  description = "The number of instances to provision in the LKE cluster."
+  type        = number
+  default     = 1
+}
+
+variable "linode_lke_default_pool_autoscaling_multiplier" {
+  description = "The multiplier for the number of instances to provision in the LKE cluster."
+  type        = number
+  default     = 1 # Default to 1 effectively disabling autoscaling
+}
+
+variable "linode_lke_additional_pool_autoscaling_multiplier" {
   description = "The multiplier for the number of instances to provision in the LKE cluster."
   type        = number
   default     = 1 # Default to 1 effectively disabling autoscaling

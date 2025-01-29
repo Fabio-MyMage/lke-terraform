@@ -22,14 +22,22 @@ output "api_endpoints" {
   value       = linode_lke_cluster.lke.api_endpoints
 }
 
-output "pools" {
-  description = "The pools and nodes of the LKE cluster."
+output "default_pool" {
+  description = "The default node pool of the LKE cluster."
   value = [
     for pool in linode_lke_cluster.lke.pool : {
       id    = pool.id
       nodes = pool.nodes
     }
   ]
+}
+
+output "additional_pool" {
+  description = "The additional node pool of the LKE cluster."
+  value = {
+    id    = linode_lke_node_pool.lke-additional-node-pool.id
+    nodes = linode_lke_node_pool.lke-additional-node-pool.nodes
+  }
 }
 
 output "status" {
